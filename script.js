@@ -3,6 +3,19 @@ var boxColor = '#FF0000'
 var canvasWidth = 300
 var canvasHeight = 300
 
+var a = new Object()
+var b = new Object()
+	b.x = 190 * 2
+	b.y = 121 * 2
+	b.width = 43 * 2
+	b.height = 43 * 2
+var l = new Object()
+var r = new Object()
+var dpad = new Object()
+var start = new Object()
+var select = new Object()
+var menu = new Object()
+
 var skin = new Image() // The image we'll draw to the canvas
 
 var loop = setInterval(drawCanvas, 1000 / 60)
@@ -41,8 +54,6 @@ function handleDrop(event)
 
 		dom.width = canvasWidth
 		dom.height = canvasHeight
-
-		console.log(dom.width, dom.height)
 	}
 
     reader.readAsDataURL(event.dataTransfer.files[0])
@@ -52,6 +63,7 @@ function drawCanvas()
 {
 	blank()
 	ctx.drawImage(skin, 0, 0)
+	drawRectangle(b.x, b.y, b.width, b.height)
 }
 
 function blank()
@@ -62,6 +74,8 @@ function blank()
 
 function drawRectangle(x, y, width, height)
 {
-    l.ctx.fillStyle = boxColor
-    l.ctx.fillRect(Math.round(x), Math.round(y), width, height)
+    ctx.strokeStyle = boxColor
+    ctx.lineWidth = 1
+    ctx.rect(Math.round(x), Math.round(y), width, height)
+    ctx.stroke()
 }
