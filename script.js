@@ -65,6 +65,9 @@ function loadValues()
 
 function updateValues()
 {
+	skin.name = document.getElementById('skinName').value
+	skin.identifier = document.getElementById('skinIdentifier').value
+
 	var button = skin[document.getElementById('selectOrientation').value].layouts[document.getElementById('selectDevice').value][document.getElementById('selectButton').value]
 
 	button.x = document.getElementById('xPosition').value
@@ -78,6 +81,17 @@ function updateValues()
 	button.extendedEdges.right = document.getElementById('extendedEdges').value
 
 	loadValues()
+}
+
+function closeExport()
+{
+	document.getElementById('export').style.display = 'none'
+}
+
+function exportJSON()
+{
+	document.getElementById('exportCode').value = JSON.stringify(skin)
+	document.getElementById('export').style.display = 'block'
 }
 
 function drawCanvas()

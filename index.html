@@ -7,8 +7,8 @@
 				padding: 0px;
 				margin: 0px;
 
-				background-image: url('images/checker.png')
-				background-repeat: repeat
+				background-image: url('images/checker.png');
+				background-repeat: repeat;
 			}
 
 			#dropper
@@ -19,7 +19,7 @@
 				width: 100%;
 				height: 100%;
 
-				background-color: #ffffff;
+				background-color: #FFFFFF;
 				z-index: 3;
 			}
 
@@ -36,6 +36,49 @@
 					font-size: 25px;
 					font-weight: bold;
 					text-align: center;
+				}
+
+			#export
+			{
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				width: 600px;
+				height: 400px;
+
+				margin-top: -200px;
+				margin-left: -300px;
+				padding-top: 10px;
+
+				background-color: #FFDC00;
+				color: #111111;
+				font-family: 'Helvetica';
+				font-size: 15px;
+				text-align: center;
+				z-index: 3;
+			}
+
+				#exportClose
+				{
+					position: absolute;
+					top: 5px;
+					right: 5px;
+
+					color: #111111;
+					cursor: pointer;
+					font-family: 'Helvetica';
+					font-size: 15px;
+				}
+
+				#exportCode
+				{
+					position: absolute;
+					left: 0px;
+					bottom: 0px;
+					width: 100%;
+					height: 90%;
+
+					color: #111111;
 				}
 
 			#canvas
@@ -71,7 +114,7 @@
 
 				#values .valueInput
 				{
-					width: 50px;
+					width: 30px;
 				}
 		</style>
 	</head>
@@ -81,9 +124,16 @@
 				gimme teh image
 			</div>
 		</div>
+		<div id = "export" style = "display: none">
+			Copy this text and save it to a file named 'default.json'
+			<div id = "exportClose" onclick = "closeExport()">x</div>
+			<textarea id = "exportCode"></textarea>
+		</div>
 		<canvas id = "canvas" width = "300px" height = "300px"></canvas>
 		<img id = "hack">
 		<div id = "values">
+			<input id = "skinName" type = "text" title = "Skin Name" value = "Skin Name" onchange = "updateValues()">
+			<input id = "skinIdentifier" type = "text" title = "Skin Identifier" value = "com.example.skin" onchange = "updateValues()">
 			<select id = "selectOrientation" onchange = "loadValues()">
 				<option value = "landscape">Landscape</option>
 				<option value = "portrait">Portrait</option>
@@ -107,6 +157,8 @@
 			<input id = "buttonWidth" class = "valueInput" type = "text" title = "Button Width" onchange = "updateValues()">
 			<input id = "buttonHeight" class = "valueInput" type = "text" title = "Button Height" onchange = "updateValues()">
 			<input id = "extendedEdges" class = "valueInput" type = "text" title = "Button Padding" onchange = "updateValues()">
+
+			<input id = "exportButton" type = "button" value = "Export" onclick = "exportJSON()">
 		</div>
 	</body>
 	<script src = "json.js"></script>

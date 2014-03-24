@@ -1,14 +1,14 @@
-var skinName = "Let's Bring Back the Retro"
-var skinIdentifier = 'com.jessemillar.retro'
+var skinName = 'Skin Name'
+var skinIdentifier = 'com.example.skin'
 
 // Set the .src of these images later based on dragging and dropping images and their sizes
-var iphonePortraitAsset // portrait@2x.png
-var ipadPortraitAsset // portrait-ipad.png
-var ipadRetinaPortraitAsset // portrait-ipad@2x.png
-var iphoneLandscapeAsset // landscape.png
-var iphoneWidescreenLandscapeAsset // landscape@R4.png
-var ipadLandscapeAsset // landscape-ipad.png
-var ipadRetinaLandscapeAsset // landscape-ipad@2x.png
+var iphonePortraitAsset = 'portrait@2x.png'
+var ipadPortraitAsset = 'portrait-ipad.png'
+var ipadRetinaPortraitAsset = 'portrait-ipad@2x.png'
+var iphoneLandscapeAsset = 'landscape.png'
+var iphoneWidescreenLandscapeAsset = 'landscape@R4.png'
+var ipadLandscapeAsset = 'landscape-ipad.png'
+var ipadRetinaLandscapeAsset = 'landscape-ipad@2x.png'
 
 var landscapeTranslucent = false
 var debug = false // Draws boxes inside the emulator which isn't really needed since I'm building this
