@@ -1,14 +1,9 @@
-// console.log(JSON.stringify(skin.portrait.layouts.iPhone.a.x))
-// console.log(document.getElementById('selectOrientation').value)
-
-var blankColor = '#FFFFFF'
 var boxColor = '#FF0000'
 var canvasWidth = 300
 var canvasHeight = 300
+var opacity = 0.3
 
 var skinImage = new Image() // The image we'll draw to the canvas
-
-var loop // Where we'll store the main "game" loop
 
 var dropper = document.getElementById('dropper')
 	dropper.addEventListener('dragover', handleDragOver, false)
@@ -46,7 +41,6 @@ function handleDrop(event)
 		dom.height = canvasHeight
 
 		loadValues()
-		loop = setInterval(drawCanvas, 1000 / 60)
 	}
 
     reader.readAsDataURL(event.dataTransfer.files[0])
@@ -56,11 +50,12 @@ function loadValues()
 {
 	var button = skin[document.getElementById('selectOrientation').value].layouts[document.getElementById('selectDevice').value][document.getElementById('selectButton').value]
 
-	document.getElementById('xPosition').value = button.x
-	document.getElementById('yPosition').value = button.y
-	document.getElementById('buttonWidth').value = button.width
-	document.getElementById('buttonHeight').value = button.height
-	document.getElementById('extendedEdges').value = button.extendedEdges.top
+	document.getElementById('xPosition').value = button.x * 2
+	document.getElementById('yPosition').value = button.y * 2
+	document.getElementById('buttonWidth').value = button.width * 2
+	document.getElementById('buttonHeight').value = button.height * 2
+
+	drawCanvas()
 }
 
 function updateValues()
@@ -70,15 +65,10 @@ function updateValues()
 
 	var button = skin[document.getElementById('selectOrientation').value].layouts[document.getElementById('selectDevice').value][document.getElementById('selectButton').value]
 
-	button.x = document.getElementById('xPosition').value
-	button.y = document.getElementById('yPosition').value
-	button.width = document.getElementById('buttonWidth').value
-	button.height = document.getElementById('buttonHeight').value
-
-	button.extendedEdges.top = document.getElementById('extendedEdges').value
-	button.extendedEdges.bottom = document.getElementById('extendedEdges').value
-	button.extendedEdges.left = document.getElementById('extendedEdges').value
-	button.extendedEdges.right = document.getElementById('extendedEdges').value
+	button.x = document.getElementById('xPosition').value / 2
+	button.y = document.getElementById('yPosition').value / 2
+	button.width = document.getElementById('buttonWidth').value / 2
+	button.height = document.getElementById('buttonHeight').value / 2
 
 	loadValues()
 }
@@ -86,6 +76,23 @@ function updateValues()
 function closeExport()
 {
 	document.getElementById('export').style.display = 'none'
+}
+
+function closeLoad()
+{
+	document.getElementById('load').style.display = 'none'
+}
+
+function openLoad()
+{
+	document.getElementById('load').style.display = 'block'
+}
+
+function loadJSON()
+{
+	skin = JSON.parse(document.getElementById('loadCode').value)
+	document.getElementById('load').style.display = 'none'
+	loadValues()
 }
 
 function exportJSON()
@@ -98,26 +105,30 @@ function drawCanvas()
 {
 	blank()
 	ctx.drawImage(skinImage, 0, 0)
-	drawRectangle(skin.portrait.layouts.iPhone.a.x, skin.portrait.layouts.iPhone.a.y, skin.portrait.layouts.iPhone.a.width, skin.portrait.layouts.iPhone.a.height)
-	drawRectangle(skin.portrait.layouts.iPhone.b.x, skin.portrait.layouts.iPhone.b.y, skin.portrait.layouts.iPhone.b.width, skin.portrait.layouts.iPhone.b.height)
-	drawRectangle(skin.portrait.layouts.iPhone.start.x, skin.portrait.layouts.iPhone.start.y, skin.portrait.layouts.iPhone.start.width, skin.portrait.layouts.iPhone.start.height)
-	drawRectangle(skin.portrait.layouts.iPhone.select.x, skin.portrait.layouts.iPhone.select.y, skin.portrait.layouts.iPhone.select.width, skin.portrait.layouts.iPhone.select.height)
-	drawRectangle(skin.portrait.layouts.iPhone.l.x, skin.portrait.layouts.iPhone.l.y, skin.portrait.layouts.iPhone.l.width, skin.portrait.layouts.iPhone.l.height)
-	drawRectangle(skin.portrait.layouts.iPhone.r.x, skin.portrait.layouts.iPhone.r.y, skin.portrait.layouts.iPhone.r.width, skin.portrait.layouts.iPhone.r.height)
-	drawRectangle(skin.portrait.layouts.iPhone.dpad.x, skin.portrait.layouts.iPhone.dpad.y, skin.portrait.layouts.iPhone.dpad.width, skin.portrait.layouts.iPhone.dpad.height)
-	drawRectangle(skin.portrait.layouts.iPhone.menu.x, skin.portrait.layouts.iPhone.menu.y, skin.portrait.layouts.iPhone.menu.width, skin.portrait.layouts.iPhone.menu.height)
+	drawButton('portrait', 'iPhone', 'a', 'A')
+	drawButton('portrait', 'iPhone', 'b', 'B')
+	drawButton('portrait', 'iPhone', 'l', 'L')
+	drawButton('portrait', 'iPhone', 'r', 'R')
+	drawButton('portrait', 'iPhone', 'start', 'Start')
+	drawButton('portrait', 'iPhone', 'select', 'Select')
+	drawButton('portrait', 'iPhone', 'dpad', 'D-Pad')
+	drawButton('portrait', 'iPhone', 'menu', 'Menu')
 }
 
 function blank()
 {
-	ctx.fillStyle = blankColor
-	ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight)
 }
 
-function drawRectangle(x, y, width, height)
+function drawButton(orientation, device, button, text)
 {
-    ctx.strokeStyle = boxColor
-    ctx.lineWidth = 1
-    ctx.rect(Math.round(x), Math.round(y), width, height)
-    ctx.stroke()
+	if (skin[orientation].layouts[device][button].x !== 0 && skin[orientation].layouts[device][button].y !== 0)
+	{
+		ctx.fillStyle = boxColor
+		ctx.font = 'bold 16px Helvetica'
+		ctx.fillText(text, skin[orientation].layouts[device][button].x, skin[orientation].layouts[device][button].y)
+		ctx.globalAlpha = opacity
+	    ctx.fillRect(skin[orientation].layouts[device][button].x, skin[orientation].layouts[device][button].y, skin[orientation].layouts[device][button].width, skin[orientation].layouts[device][button].height)
+	    ctx.globalAlpha = 1
+	}
 }
