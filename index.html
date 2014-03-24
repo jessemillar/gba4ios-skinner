@@ -62,11 +62,17 @@
 				position: absolute;
 				left: 0px;
 				bottom: 0px;
+				width: 100%;
 
-				background-color: #FFFFFF;
+				background-color: #FFDC00;
 				color: #111111;
 				z-index: 2;
 			}
+
+				#values .valueInput
+				{
+					width: 50px;
+				}
 		</style>
 	</head>
 	<body>
@@ -78,19 +84,31 @@
 		<canvas id = "canvas" width = "300px" height = "300px"></canvas>
 		<img id = "hack">
 		<div id = "values">
-			<form action = "">
-				<select name = "button">
-					<option value = "a">A</option>
-					<option value = "b">B</option>
-					<option value = "l">L</option>
-					<option value = "r">R</option>
-					<option value = "dpad">D-Pad</option>
-					<option value = "menu">Menu</option>
-					<option value = "start">Start</option>
-					<option value = "select">Select</option>
-				</select>
-			</form>
+			<select id = "selectOrientation" onchange = "loadValues()">
+				<option value = "landscape">Landscape</option>
+				<option value = "portrait">Portrait</option>
+			</select>
+			<select id = "selectDevice" onchange = "loadValues()">
+				<option value = "iPad">iPad</option>
+				<option value = "iPhone">iPhone</option>
+			</select>
+			<select id = "selectButton" onchange = "loadValues()">
+				<option value = "a">A</option>
+				<option value = "b">B</option>
+				<option value = "l">L</option>
+				<option value = "r">R</option>
+				<option value = "dpad">D-Pad</option>
+				<option value = "menu">Menu</option>
+				<option value = "start">Start</option>
+				<option value = "select">Select</option>
+			</select>
+			<input id = "xPosition" class = "valueInput" type = "text" title = "X Position" onchange = "updateValues()">
+			<input id = "yPosition" class = "valueInput" type = "text" title = "Y Position" onchange = "updateValues()">
+			<input id = "buttonWidth" class = "valueInput" type = "text" title = "Button Width" onchange = "updateValues()">
+			<input id = "buttonHeight" class = "valueInput" type = "text" title = "Button Height" onchange = "updateValues()">
+			<input id = "extendedEdges" class = "valueInput" type = "text" title = "Button Padding" onchange = "updateValues()">
 		</div>
 	</body>
+	<script src = "json.js"></script>
 	<script src = "script.js"></script>
 </html>
