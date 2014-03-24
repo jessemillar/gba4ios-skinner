@@ -145,7 +145,7 @@
 
 			#values
 			{
-				position: absolute;
+				position: fixed;
 				left: 0px;
 				bottom: 0px;
 				width: 100%;
@@ -183,14 +183,6 @@
 		<div id = "values">
 			<input id = "skinName" type = "text" title = "Skin Name" value = "Skin Name" onchange = "updateValues()">
 			<input id = "skinIdentifier" type = "text" title = "Skin Identifier" value = "com.example.skin" onchange = "updateValues()">
-			<select id = "selectOrientation" onchange = "loadValues()">
-				<option value = "landscape">Landscape</option>
-				<option value = "portrait" selected>Portrait</option>
-			</select>
-			<select id = "selectDevice" onchange = "loadValues()">
-				<option value = "iPad">iPad</option>
-				<option value = "iPhone" selected>iPhone</option>
-			</select>
 			<select id = "selectButton" onchange = "loadValues()">
 				<option value = "a">A</option>
 				<option value = "b">B</option>
@@ -208,6 +200,7 @@
 
 			<input id = "exportButton" type = "button" value = "Export" onclick = "exportJSON()">
 			<input id = "loadButton" type = "button" value = "Load" onclick = "openLoad()">
+			<input id = "imageButton" type = "button" value = "New Image" onclick = "openDropper()">
 		</div>
 	</body>
 	<script src = "json.js"></script>

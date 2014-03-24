@@ -3,6 +3,9 @@ var canvasWidth = 300
 var canvasHeight = 300
 var opacity = 0.3
 
+var currentDevice
+var currentOrientation
+
 var skinImage = new Image() // The image we'll draw to the canvas
 
 var dropper = document.getElementById('dropper')
@@ -32,13 +35,49 @@ function handleDrop(event)
 	{
 		skinImage.src = file.target.result
 		document.getElementById('hack').src = skinImage.src
-		document.getElementById('dropper').style.display = 'none'
+		closeDropper()
 
 		canvasWidth = document.getElementById('hack').offsetWidth
 		canvasHeight = document.getElementById('hack').offsetHeight
 
 		dom.width = canvasWidth
 		dom.height = canvasHeight
+
+		if (canvasWidth == 640 && canvasHeight == 480) // iPhone
+		{
+			currentOrientation = 'portrait'
+			currentDevice = 'iPhone'
+		}
+		else if (canvasWidth == 768 && canvasHeight == 427) // iPad
+		{
+			currentOrientation = 'portrait'
+			currentDevice = 'iPad'
+		}
+		else if (canvasWidth == 1536 && canvasHeight == 854) // iPad Retina
+		{
+			currentOrientation = 'portrait'
+			currentDevice = 'iPad'
+		}
+		else if (canvasWidth == 960 && canvasHeight == 640) // iPhone
+		{
+			currentOrientation = 'landscape'
+			currentDevice = 'iPhone'
+		}
+		else if (canvasWidth == 1136 && canvasHeight == 640) // iPhone Widescreen
+		{
+			currentOrientation = 'landscape'
+			currentDevice = 'iPhoneWidescreen'
+		}
+		else if (canvasWidth == 1024 && canvasHeight == 768) // iPad
+		{
+			currentOrientation = 'landscape'
+			currentDevice = 'iPad'
+		}
+		else if (canvasWidth == 2048 && canvasHeight == 1536) // iPad Retina
+		{
+			currentOrientation = 'landscape'
+			currentDevice = 'iPad'
+		}
 
 		loadValues()
 	}
@@ -51,7 +90,7 @@ function loadValues()
 	document.getElementById('skinName').value = skin.name
 	document.getElementById('skinIdentifier').value = skin.identifier
 
-	var button = skin[document.getElementById('selectOrientation').value].layouts[document.getElementById('selectDevice').value][document.getElementById('selectButton').value]
+	var button = skin[currentOrientation].layouts[currentDevice][document.getElementById('selectButton').value]
 
 	document.getElementById('xPosition').value = button.x * 2
 	document.getElementById('yPosition').value = button.y * 2
@@ -66,7 +105,7 @@ function updateValues()
 	skin.name = document.getElementById('skinName').value
 	skin.identifier = document.getElementById('skinIdentifier').value
 
-	var button = skin[document.getElementById('selectOrientation').value].layouts[document.getElementById('selectDevice').value][document.getElementById('selectButton').value]
+	var button = skin[currentOrientation].layouts[currentDevice][document.getElementById('selectButton').value]
 
 	button.x = document.getElementById('xPosition').value / 2
 	button.y = document.getElementById('yPosition').value / 2
@@ -74,6 +113,16 @@ function updateValues()
 	button.height = document.getElementById('buttonHeight').value / 2
 
 	loadValues()
+}
+
+function openDropper()
+{
+	document.getElementById('dropper').style.display = 'block'
+}
+
+function closeDropper()
+{
+	document.getElementById('dropper').style.display = 'none'
 }
 
 function closeExport()
@@ -108,14 +157,14 @@ function drawCanvas()
 {
 	blank()
 	ctx.drawImage(skinImage, 0, 0)
-	drawButton('portrait', 'iPhone', 'a', 'A')
-	drawButton('portrait', 'iPhone', 'b', 'B')
-	drawButton('portrait', 'iPhone', 'l', 'L')
-	drawButton('portrait', 'iPhone', 'r', 'R')
-	drawButton('portrait', 'iPhone', 'start', 'Start')
-	drawButton('portrait', 'iPhone', 'select', 'Select')
-	drawButton('portrait', 'iPhone', 'dpad', 'D-Pad')
-	drawButton('portrait', 'iPhone', 'menu', 'Menu')
+	drawButton(currentOrientation, currentDevice, 'a', 'A')
+	drawButton(currentOrientation, currentDevice, 'b', 'B')
+	drawButton(currentOrientation, currentDevice, 'l', 'L')
+	drawButton(currentOrientation, currentDevice, 'r', 'R')
+	drawButton(currentOrientation, currentDevice, 'start', 'Start')
+	drawButton(currentOrientation, currentDevice, 'select', 'Select')
+	drawButton(currentOrientation, currentDevice, 'dpad', 'D-Pad')
+	drawButton(currentOrientation, currentDevice, 'menu', 'Menu')
 }
 
 function blank()
