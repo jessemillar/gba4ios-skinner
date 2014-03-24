@@ -48,6 +48,9 @@ function handleDrop(event)
 
 function loadValues()
 {
+	document.getElementById('skinName').value = skin.name
+	document.getElementById('skinIdentifier').value = skin.identifier
+
 	var button = skin[document.getElementById('selectOrientation').value].layouts[document.getElementById('selectDevice').value][document.getElementById('selectButton').value]
 
 	document.getElementById('xPosition').value = button.x * 2
@@ -122,13 +125,10 @@ function blank()
 
 function drawButton(orientation, device, button, text)
 {
-	if (skin[orientation].layouts[device][button].x !== 0 && skin[orientation].layouts[device][button].y !== 0)
-	{
-		ctx.fillStyle = boxColor
-		ctx.font = 'bold 16px Helvetica'
-		ctx.fillText(text, skin[orientation].layouts[device][button].x, skin[orientation].layouts[device][button].y)
-		ctx.globalAlpha = opacity
-	    ctx.fillRect(skin[orientation].layouts[device][button].x, skin[orientation].layouts[device][button].y, skin[orientation].layouts[device][button].width, skin[orientation].layouts[device][button].height)
-	    ctx.globalAlpha = 1
-	}
+	ctx.fillStyle = boxColor
+	ctx.font = 'bold 16px Helvetica'
+	ctx.fillText(text, skin[orientation].layouts[device][button].x * 2, skin[orientation].layouts[device][button].y * 2)
+	ctx.globalAlpha = opacity
+    ctx.fillRect(skin[orientation].layouts[device][button].x * 2, skin[orientation].layouts[device][button].y * 2, skin[orientation].layouts[device][button].width * 2, skin[orientation].layouts[device][button].height * 2)
+    ctx.globalAlpha = 1
 }
