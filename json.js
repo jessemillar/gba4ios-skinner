@@ -2,7 +2,7 @@ var skinName = 'Skin Name'
 var skinIdentifier = 'com.example.skin'
 
 // Set the .src of these images later based on dragging and dropping images and their sizes
-var iphonePortraitAsset = 'portrait@2x.png'
+var iphonePortraitAsset = 'portrait.png'
 var ipadPortraitAsset = 'portrait-ipad.png'
 var ipadRetinaPortraitAsset = 'portrait-ipad@2x.png'
 var iphoneLandscapeAsset = 'landscape.png'
