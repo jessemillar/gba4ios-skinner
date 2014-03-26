@@ -25,6 +25,8 @@ function handleDragOver(event)
 
 function handleDrop(event)
 {
+	document.getElementById('instructions').style.display = 'none'
+
 	// Don't let the browser do things with the file
 	event.stopPropagation()
 	event.preventDefault()
@@ -177,8 +179,8 @@ function drawButton(orientation, device, button, text)
 	ctx.fillStyle = boxColor
 	if (skin[orientation].layouts[device][button].width * 2 > 0 && skin[orientation].layouts[device][button].height * 2 > 0)
 	{
-		ctx.font = 'bold 16px Helvetica'
-		ctx.fillText(text, skin[orientation].layouts[device][button].x * 2 + 2, skin[orientation].layouts[device][button].y * 2 + 16)
+		ctx.font = 'bold 15px Helvetica'
+		ctx.fillText(text, skin[orientation].layouts[device][button].x * 2 + 2, skin[orientation].layouts[device][button].y * 2 + 15)
 	}
 	ctx.globalAlpha = opacity
     ctx.fillRect(skin[orientation].layouts[device][button].x * 2, skin[orientation].layouts[device][button].y * 2, skin[orientation].layouts[device][button].width * 2, skin[orientation].layouts[device][button].height * 2)

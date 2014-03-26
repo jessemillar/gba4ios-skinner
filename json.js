@@ -9,7 +9,7 @@ var iphoneWidescreenLandscapeAsset = 'landscape@R4.png'
 var ipadLandscapeAsset = 'landscape-ipad.png'
 var ipadRetinaLandscapeAsset = 'landscape-ipad@2x.png'
 
-var landscapeTranslucent = false
+var landscapeTranslucent = true
 var debug = false // Draws boxes inside the emulator which isn't really needed since I'm building this
 
 var skin = new Object()
