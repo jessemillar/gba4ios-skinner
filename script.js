@@ -104,6 +104,11 @@ function handleDrop(event)
     imageReader.readAsDataURL(data)
 }
 
+function displayMouse()
+{
+	document.getElementById('mouseCoordinates').value = 'x: ' + event.clientX + ' y: ' + event.clientY
+}
+
 function loadValues()
 {
 	document.getElementById('skinName').value = skin.name
@@ -141,7 +146,7 @@ function closeExport()
 
 function exportJSON()
 {
-	document.getElementById('exportCode').value = JSON.stringify(skin)
+	document.getElementById('export').value = JSON.stringify(skin)
 	document.getElementById('export').style.display = 'block'
 }
 
