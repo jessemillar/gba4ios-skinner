@@ -13,73 +13,14 @@
 
 			#dropper
 			{
-				position: absolute;
+				position: fixed;
 				left: 0px;
 				top: 0px;
 				width: 100%;
 				height: 100%;
 
-				background-color: #FFFFFF;
-				z-index: 3;
+				z-index: 2;
 			}
-
-				#instructions
-				{
-					position: absolute;
-					left: 0px;
-					top: 50%;
-					width: 100%;
-					height: auto;
-
-					color: #111111;
-					font-family: 'Helvetica';
-					font-size: 25px;
-					font-weight: bold;
-					text-align: center;
-				}
-
-			#load
-			{
-				position: absolute;
-				left: 50%;
-				top: 50%;
-				width: 600px;
-				height: 400px;
-
-				margin-top: -200px;
-				margin-left: -300px;
-				padding-top: 10px;
-
-				background-color: #FFDC00;
-				color: #111111;
-				font-family: 'Helvetica';
-				font-size: 15px;
-				text-align: center;
-				z-index: 3;
-			}
-
-				#loadClose
-				{
-					position: absolute;
-					top: 5px;
-					right: 5px;
-
-					color: #111111;
-					cursor: pointer;
-					font-family: 'Helvetica';
-					font-size: 15px;
-				}
-
-				#loadCode
-				{
-					position: absolute;
-					left: 0px;
-					bottom: 0px;
-					width: 100%;
-					height: 90%;
-
-					color: #111111;
-				}
 
 			#export
 			{
@@ -98,7 +39,7 @@
 				font-family: 'Helvetica';
 				font-size: 15px;
 				text-align: center;
-				z-index: 3;
+				z-index: 4;
 			}
 
 				#exportClose
@@ -130,6 +71,8 @@
 				left: 0px;
 				top: 0px;
 
+				padding-bottom: 65px;
+
 				z-index: 1;
 			}
 
@@ -152,7 +95,7 @@
 
 				background-color: #FFDC00;
 				color: #111111;
-				z-index: 2;
+				z-index: 3;
 			}
 
 				#values .valueInput
@@ -162,29 +105,19 @@
 		</style>
 	</head>
 	<body>
-		<div id = "dropper">
-			<div id = "instructions">
-				gimme teh image
-			</div>
-		</div>
-		<div id = "load" style = "display: none">
-			Paste in previously-generated JSON
-			<input id = "loadButton" type = "button" value = "Load" onclick = "loadJSON()">
-			<div id = "loadClose" onclick = "closeLoad()">x</div>
-			<textarea id = "loadCode"></textarea>
-		</div>
+		<div id = "dropper"></div>
 		<div id = "export" style = "display: none">
 			Copy this text and save it to a file named 'default.json'
 			<div id = "loadClose" onclick = "closeExport()">x</div>
 			<textarea id = "exportCode"></textarea>
 		</div>
-		<canvas id = "canvas" width = "300px" height = "300px"></canvas>
+		<canvas id = "canvas" width = "640px" height = "480px"></canvas>
 		<img id = "hack">
 		<div id = "values">
 			<input id = "skinName" type = "text" title = "Skin Name" value = "Skin Name" onchange = "updateValues()">
 			<input id = "skinIdentifier" type = "text" title = "Skin Identifier" value = "com.example.skin" onchange = "updateValues()">
 			<select id = "selectButton" onchange = "loadValues()">
-				<option value = "a">A</option>
+				<option value = "a" selected>A</option>
 				<option value = "b">B</option>
 				<option value = "l">L</option>
 				<option value = "r">R</option>
@@ -199,8 +132,6 @@
 			<input id = "buttonHeight" class = "valueInput" type = "text" title = "Button Height" onchange = "updateValues()">
 
 			<input id = "exportButton" type = "button" value = "Export" onclick = "exportJSON()">
-			<input id = "loadButton" type = "button" value = "Load" onclick = "openLoad()">
-			<input id = "imageButton" type = "button" value = "New Image" onclick = "openDropper()">
 		</div>
 	</body>
 	<script src = "json.js"></script>

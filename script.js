@@ -1,10 +1,10 @@
 var boxColor = '#FF0000'
-var canvasWidth = 300
-var canvasHeight = 300
+var canvasWidth = 640
+var canvasHeight = 480
 var opacity = 0.3
 
-var currentDevice
-var currentOrientation
+var currentDevice = 'iPhone'
+var currentOrientation = 'portrait'
 
 var skinImage = new Image() // The image we'll draw to the canvas
 
@@ -29,60 +29,79 @@ function handleDrop(event)
 	event.stopPropagation()
 	event.preventDefault()
 
-	var reader = new FileReader()
+	var data = event.dataTransfer.files[0]
 
-	reader.onload = function(file)
+	var imageReader = new FileReader()
+	var jsonReader = new FileReader()
+
+	jsonReader.onload = function(file)
 	{
-		skinImage.src = file.target.result
-		document.getElementById('hack').src = skinImage.src
-		closeDropper()
-
-		canvasWidth = document.getElementById('hack').offsetWidth
-		canvasHeight = document.getElementById('hack').offsetHeight
-
-		dom.width = canvasWidth
-		dom.height = canvasHeight
-
-		if (canvasWidth == 640 && canvasHeight == 480) // iPhone
-		{
-			currentOrientation = 'portrait'
-			currentDevice = 'iPhone'
-		}
-		else if (canvasWidth == 768 && canvasHeight == 427) // iPad
-		{
-			currentOrientation = 'portrait'
-			currentDevice = 'iPad'
-		}
-		else if (canvasWidth == 1536 && canvasHeight == 854) // iPad Retina
-		{
-			currentOrientation = 'portrait'
-			currentDevice = 'iPad'
-		}
-		else if (canvasWidth == 960 && canvasHeight == 640) // iPhone
-		{
-			currentOrientation = 'landscape'
-			currentDevice = 'iPhone'
-		}
-		else if (canvasWidth == 1136 && canvasHeight == 640) // iPhone Widescreen
-		{
-			currentOrientation = 'landscape'
-			currentDevice = 'iPhoneWidescreen'
-		}
-		else if (canvasWidth == 1024 && canvasHeight == 768) // iPad
-		{
-			currentOrientation = 'landscape'
-			currentDevice = 'iPad'
-		}
-		else if (canvasWidth == 2048 && canvasHeight == 1536) // iPad Retina
-		{
-			currentOrientation = 'landscape'
-			currentDevice = 'iPad'
-		}
-
+		var dataURL = file.target.result
+		skin = JSON.parse(dataURL)
 		loadValues()
 	}
 
-    reader.readAsDataURL(event.dataTransfer.files[0])
+	imageReader.onload = function(file)
+	{
+		var dataURL = file.target.result
+		var mimeType = dataURL.split(",")[0].split(":")[1].split(";")[0]
+
+		if (mimeType == 'application/json')
+		{
+			jsonReader.readAsText(data)
+		}
+		else if (mimeType == 'image/png')
+		{
+			skinImage.src = dataURL
+			document.getElementById('hack').src = skinImage.src
+
+			canvasWidth = document.getElementById('hack').offsetWidth
+			canvasHeight = document.getElementById('hack').offsetHeight
+
+			dom.width = canvasWidth
+			dom.height = canvasHeight
+
+			if (canvasWidth == 640 && canvasHeight == 480) // iPhone
+			{
+				currentOrientation = 'portrait'
+				currentDevice = 'iPhone'
+			}
+			else if (canvasWidth == 768 && canvasHeight == 427) // iPad
+			{
+				currentOrientation = 'portrait'
+				currentDevice = 'iPad'
+			}
+			else if (canvasWidth == 1536 && canvasHeight == 854) // iPad Retina
+			{
+				currentOrientation = 'portrait'
+				currentDevice = 'iPad'
+			}
+			else if (canvasWidth == 960 && canvasHeight == 640) // iPhone
+			{
+				currentOrientation = 'landscape'
+				currentDevice = 'iPhone'
+			}
+			else if (canvasWidth == 1136 && canvasHeight == 640) // iPhone Widescreen
+			{
+				currentOrientation = 'landscape'
+				currentDevice = 'iPhoneWidescreen'
+			}
+			else if (canvasWidth == 1024 && canvasHeight == 768) // iPad
+			{
+				currentOrientation = 'landscape'
+				currentDevice = 'iPad'
+			}
+			else if (canvasWidth == 2048 && canvasHeight == 1536) // iPad Retina
+			{
+				currentOrientation = 'landscape'
+				currentDevice = 'iPad'
+			}
+
+			loadValues()
+		}
+	}
+
+    imageReader.readAsDataURL(data)
 }
 
 function loadValues()
@@ -115,36 +134,9 @@ function updateValues()
 	loadValues()
 }
 
-function openDropper()
-{
-	document.getElementById('dropper').style.display = 'block'
-}
-
-function closeDropper()
-{
-	document.getElementById('dropper').style.display = 'none'
-}
-
 function closeExport()
 {
 	document.getElementById('export').style.display = 'none'
-}
-
-function closeLoad()
-{
-	document.getElementById('load').style.display = 'none'
-}
-
-function openLoad()
-{
-	document.getElementById('load').style.display = 'block'
-}
-
-function loadJSON()
-{
-	skin = JSON.parse(document.getElementById('loadCode').value)
-	document.getElementById('load').style.display = 'none'
-	loadValues()
 }
 
 function exportJSON()
@@ -169,14 +161,20 @@ function drawCanvas()
 
 function blank()
 {
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+	ctx.globalAlpha = 0.5
+	ctx.fillStyle = '#FFDC00'
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+    ctx.globalAlpha = 1
 }
 
 function drawButton(orientation, device, button, text)
 {
 	ctx.fillStyle = boxColor
-	ctx.font = 'bold 16px Helvetica'
-	ctx.fillText(text, skin[orientation].layouts[device][button].x * 2, skin[orientation].layouts[device][button].y * 2)
+	if (skin[orientation].layouts[device][button].width * 2 > 0 && skin[orientation].layouts[device][button].height * 2 > 0)
+	{
+		ctx.font = 'bold 16px Helvetica'
+		ctx.fillText(text, skin[orientation].layouts[device][button].x * 2 + 2, skin[orientation].layouts[device][button].y * 2 + 16)
+	}
 	ctx.globalAlpha = opacity
     ctx.fillRect(skin[orientation].layouts[device][button].x * 2, skin[orientation].layouts[device][button].y * 2, skin[orientation].layouts[device][button].width * 2, skin[orientation].layouts[device][button].height * 2)
     ctx.globalAlpha = 1
