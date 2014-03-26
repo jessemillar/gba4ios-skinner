@@ -4,6 +4,7 @@ var canvasHeight = 480
 var opacity = 0.3
 
 var errorAlerted = false
+var mobileAlerted = false
 
 var currentDevice = 'iPhone'
 var currentOrientation = 'portrait'
@@ -17,9 +18,18 @@ var dropper = document.getElementById('dropper')
 var dom = document.getElementById('canvas')
 var ctx = dom.getContext('2d')
 
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent))
+{
+	alert('GBA4iOS Skinner currently supports only desktop computers.')
+	mobileAlerted = true
+}
+
 if (!window.chrome)
 {
-	alert('GBA4iOS Skinner currently supports only Google Chrome.')
+	if (!mobileAlerted)
+	{
+		alert('GBA4iOS Skinner currently supports only Google Chrome.')
+	}
 }
 
 function handleDragOver(event)
@@ -180,6 +190,7 @@ function drawCanvas()
 
 function blank()
 {
+	ctx.clearRect(0, 0, canvasWidth, canvasHeight)
 	ctx.globalAlpha = 0.5
 	ctx.fillStyle = '#FFDC00'
     ctx.fillRect(0, 0, canvasWidth, canvasHeight)
