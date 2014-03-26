@@ -3,6 +3,8 @@ var canvasWidth = 640
 var canvasHeight = 480
 var opacity = 0.3
 
+var errorAlerted = false
+
 var currentDevice = 'iPhone'
 var currentOrientation = 'portrait'
 
@@ -127,6 +129,7 @@ function loadValues()
 	document.getElementById('yPosition').value = button.y * 2
 	document.getElementById('buttonWidth').value = button.width * 2
 	document.getElementById('buttonHeight').value = button.height * 2
+	document.getElementById('buttonPadding').value = button.extendedEdges.left * 2
 
 	drawCanvas()
 }
@@ -142,6 +145,10 @@ function updateValues()
 	button.y = document.getElementById('yPosition').value / 2
 	button.width = document.getElementById('buttonWidth').value / 2
 	button.height = document.getElementById('buttonHeight').value / 2
+	button.extendedEdges.left = document.getElementById('buttonPadding').value / 2
+	button.extendedEdges.right = document.getElementById('buttonPadding').value / 2
+	button.extendedEdges.top = document.getElementById('buttonPadding').value / 2
+	button.extendedEdges.bottom = document.getElementById('buttonPadding').value / 2
 
 	loadValues()
 }
@@ -181,6 +188,8 @@ function blank()
 
 function drawButton(orientation, device, button, text)
 {
+	var thingy = skin[orientation].layouts[device][button]
+
 	ctx.fillStyle = boxColor
 	if (skin[orientation].layouts[device][button].width * 2 > 0 && skin[orientation].layouts[device][button].height * 2 > 0)
 	{
@@ -188,6 +197,18 @@ function drawButton(orientation, device, button, text)
 		ctx.fillText(text, skin[orientation].layouts[device][button].x * 2 + 2, skin[orientation].layouts[device][button].y * 2 + 15)
 	}
 	ctx.globalAlpha = opacity
-    ctx.fillRect(skin[orientation].layouts[device][button].x * 2, skin[orientation].layouts[device][button].y * 2, skin[orientation].layouts[device][button].width * 2, skin[orientation].layouts[device][button].height * 2)
+
+	if (thingy.extendedEdges.left && thingy.extendedEdges.right && thingy.extendedEdges.top && thingy.extendedEdges.bottom)
+	{
+		ctx.fillRect(thingy.x * 2 - thingy.extendedEdges.left * 2, thingy.y * 2 - thingy.extendedEdges.top * 2, thingy.width * 2 + thingy.extendedEdges.left * 2 + thingy.extendedEdges.right * 2, thingy.height * 2 + thingy.extendedEdges.top * 2 + thingy.extendedEdges.bottom * 2)
+	}
+	else
+	{
+		thingy.extendedEdges.left = 0
+		thingy.extendedEdges.right = 0
+		thingy.extendedEdges.top = 0
+		thingy.extendedEdges.bottom = 0
+		ctx.fillRect(thingy.x * 2, thingy.y * 2, thingy.width * 2, thingy.height * 2)
+	}
     ctx.globalAlpha = 1
 }
