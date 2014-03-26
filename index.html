@@ -39,6 +39,15 @@
 				z-index: 5;
 			}
 
+			#logo
+			{
+				position: absolute;
+				right: 4px;
+				top: 4px;
+				width: 20px;
+				height: 15px;
+			}
+
 			#canvas
 			{
 				position: absolute;
@@ -110,7 +119,7 @@
 		<textarea id = "export" style = "display: none"></textarea>
 		<canvas id = "canvas" width = "640px" height = "480px"></canvas>
 		<div id = "instructions">
-			Drag and drop a .png or .json file to start
+			Drag and drop a .png or .json file to get started
 			<br>
 			<br>
 			When finished, click "Export" and save the displayed text in a file named "info.json"
@@ -135,6 +144,10 @@
 		</div>
 		<img id = "hack">
 		<div id = "values">
+			<div id = "logo">
+				<a href = "http://www.jesseimllar.com/"><img src = "images/logo.png" title = "I'm pretty much the best.  I make iOS games too!"></a>
+			</div>
+
 			<input id = "skinName" type = "text" title = "Skin Name" value = "Skin Name" onchange = "updateValues()">
 			<input id = "skinIdentifier" type = "text" title = "Skin Identifier" value = "com.example.skin" onchange = "updateValues()">
 			<select id = "selectButton" onchange = "loadValues()">
