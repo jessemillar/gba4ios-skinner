@@ -15,6 +15,11 @@ var dropper = document.getElementById('dropper')
 var dom = document.getElementById('canvas')
 var ctx = dom.getContext('2d')
 
+if (!window.chrome)
+{
+	alert('GBA4iOS Skinner currently supports only Google Chrome.')
+}
+
 function handleDragOver(event)
 {
 	// Don't let the browser do things with the file
