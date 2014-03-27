@@ -106,7 +106,7 @@ function handleDrop(event)
 			else if (canvasWidth == 1136 && canvasHeight == 640) // iPhone Widescreen
 			{
 				currentOrientation = 'landscape'
-				currentDevice = 'iPhoneWidescreen'
+				currentDevice = 'iPhone Widescreen'
 			}
 			else if (canvasWidth == 1024 && canvasHeight == 768) // iPad
 			{
@@ -147,7 +147,7 @@ function mouseRelease()
 
 function positionButton()
 {
-	if (event.clientX < canvasWidth && event.clientY < canvasHeight)
+	if (event.clientX < canvasWidth && event.clientY < canvasHeight && document.getElementById('export').style.display == 'none')
 	{
 		var button = skin[currentOrientation].layouts[currentDevice][document.getElementById('selectButton').value]
 		button.x = event.clientX / 2
@@ -231,14 +231,14 @@ function exportJSON()
 {
 	var tempSkin = skin
 
-	if (!document.getElementById('screenModification').checked)
-	{
+	// if (!document.getElementById('screenModification').checked)
+	// {
 		delete tempSkin.portrait.layouts.iPhone.screen
 		delete tempSkin.portrait.layouts.iPad.screen
 		delete tempSkin.landscape.layouts.iPad.screen
-		delete tempSkin.landscape.layouts.iPhoneWidescreen.screen
+		delete tempSkin.landscape.layouts['iPhone Widescreen'].screen
 		delete tempSkin.landscape.layouts.iPad.screen
-	}
+	// }
 	document.getElementById('export').value = JSON.stringify(tempSkin)
 	document.getElementById('export').style.display = 'block'
 }
@@ -255,6 +255,7 @@ function drawCanvas()
 	drawButton(currentOrientation, currentDevice, 'select', 'Select')
 	drawButton(currentOrientation, currentDevice, 'dpad', 'D-Pad')
 	drawButton(currentOrientation, currentDevice, 'menu', 'Menu')
+	/*
 	if (document.getElementById('screenModification').checked)
 	{
 		if (skin[currentOrientation].layouts[currentDevice].screen.width * 2 > 0 && skin[currentOrientation].layouts[currentDevice].screen.height * 2 > 0)
@@ -269,6 +270,7 @@ function drawCanvas()
 			ctx.globalAlpha = 1
 		}
 	}
+	*/
 }
 
 function blank()
