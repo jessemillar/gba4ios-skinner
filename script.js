@@ -1,7 +1,10 @@
 var boxColor = '#FF0000'
+var screenBoxColor = '#85144B'
 var canvasWidth = 640
 var canvasHeight = 480
-var opacity = 0.3
+var opacity = 0.35
+
+var clicked = false
 
 var errorAlerted = false
 var mobileAlerted = false
@@ -126,22 +129,31 @@ function handleDrop(event)
 function displayMouse()
 {
 	document.getElementById('mouseCoordinates').value = 'x: ' + event.clientX + ' y: ' + event.clientY
+	if (clicked)
+	{
+		positionButton()
+	}
 }
 
-function loadValues()
+function mouseClick()
 {
-	document.getElementById('skinName').value = skin.name
-	document.getElementById('skinIdentifier').value = skin.identifier
+	clicked = true
+}
 
-	var button = skin[currentOrientation].layouts[currentDevice][document.getElementById('selectButton').value]
+function mouseRelease()
+{
+	clicked = false
+}
 
-	document.getElementById('xPosition').value = button.x * 2
-	document.getElementById('yPosition').value = button.y * 2
-	document.getElementById('buttonWidth').value = button.width * 2
-	document.getElementById('buttonHeight').value = button.height * 2
-	document.getElementById('buttonPadding').value = button.extendedEdges.left * 2
-
-	drawCanvas()
+function positionButton()
+{
+	if (event.clientX < canvasWidth && event.clientY < canvasHeight)
+	{
+		var button = skin[currentOrientation].layouts[currentDevice][document.getElementById('selectButton').value]
+		button.x = event.clientX / 2
+		button.y = event.clientY / 2
+		loadValues()
+	}
 }
 
 function updateValues()
@@ -149,18 +161,65 @@ function updateValues()
 	skin.name = document.getElementById('skinName').value
 	skin.identifier = document.getElementById('skinIdentifier').value
 
+	skin.landscape.translucent = document.getElementById('allowedTransparency').checked
+
 	var button = skin[currentOrientation].layouts[currentDevice][document.getElementById('selectButton').value]
 
 	button.x = document.getElementById('xPosition').value / 2
 	button.y = document.getElementById('yPosition').value / 2
 	button.width = document.getElementById('buttonWidth').value / 2
 	button.height = document.getElementById('buttonHeight').value / 2
-	button.extendedEdges.left = document.getElementById('buttonPadding').value / 2
-	button.extendedEdges.right = document.getElementById('buttonPadding').value / 2
-	button.extendedEdges.top = document.getElementById('buttonPadding').value / 2
-	button.extendedEdges.bottom = document.getElementById('buttonPadding').value / 2
+	if (document.getElementById('selectButton').value != 'screen')
+	{
+		button.extendedEdges.left = document.getElementById('buttonPadding').value / 2
+		button.extendedEdges.right = document.getElementById('buttonPadding').value / 2
+		button.extendedEdges.top = document.getElementById('buttonPadding').value / 2
+		button.extendedEdges.bottom = document.getElementById('buttonPadding').value / 2
+	}
 
 	loadValues()
+}
+
+function loadValues()
+{
+	document.getElementById('skinName').value = skin.name
+	document.getElementById('skinIdentifier').value = skin.identifier
+
+	document.getElementById('allowedTransparency').checked = skin.landscape.translucent
+
+	var button = skin[currentOrientation].layouts[currentDevice][document.getElementById('selectButton').value]
+
+	if (!button.x)
+	{
+		button.x = 0
+	}
+	if (!button.y)
+	{
+		button.y = 0
+	}
+	if (!button.width)
+	{
+		button.width = 0
+	}
+	if (!button.height)
+	{
+		button.height = 0
+	}
+
+	document.getElementById('xPosition').value = button.x * 2
+	document.getElementById('yPosition').value = button.y * 2
+	document.getElementById('buttonWidth').value = button.width * 2
+	document.getElementById('buttonHeight').value = button.height * 2
+	if (document.getElementById('selectButton').value != 'screen')
+	{
+		document.getElementById('buttonPadding').value = button.extendedEdges.left * 2
+	}
+	else
+	{
+		document.getElementById('buttonPadding').value = 'null'
+	}
+
+	drawCanvas()
 }
 
 function closeExport()
@@ -170,7 +229,17 @@ function closeExport()
 
 function exportJSON()
 {
-	document.getElementById('export').value = JSON.stringify(skin)
+	var tempSkin = skin
+
+	if (!document.getElementById('screenModification').checked)
+	{
+		delete tempSkin.portrait.layouts.iPhone.screen
+		delete tempSkin.portrait.layouts.iPad.screen
+		delete tempSkin.landscape.layouts.iPad.screen
+		delete tempSkin.landscape.layouts.iPhoneWidescreen.screen
+		delete tempSkin.landscape.layouts.iPad.screen
+	}
+	document.getElementById('export').value = JSON.stringify(tempSkin)
 	document.getElementById('export').style.display = 'block'
 }
 
@@ -186,6 +255,20 @@ function drawCanvas()
 	drawButton(currentOrientation, currentDevice, 'select', 'Select')
 	drawButton(currentOrientation, currentDevice, 'dpad', 'D-Pad')
 	drawButton(currentOrientation, currentDevice, 'menu', 'Menu')
+	if (document.getElementById('screenModification').checked)
+	{
+		if (skin[currentOrientation].layouts[currentDevice].screen.width * 2 > 0 && skin[currentOrientation].layouts[currentDevice].screen.height * 2 > 0)
+		{
+			var thingy = skin[currentOrientation].layouts[currentDevice].screen
+
+			ctx.fillStyle = screenBoxColor
+			ctx.font = 'bold 15px Helvetica'
+			ctx.fillText('Screen', skin[currentOrientation].layouts[currentDevice].screen.x * 2 + 2, skin[currentOrientation].layouts[currentDevice].screen.y * 2 + 15)
+			ctx.globalAlpha = 0.65
+			ctx.fillRect(thingy.x * 2, thingy.y * 2, thingy.width * 2, thingy.height * 2)
+			ctx.globalAlpha = 1
+		}
+	}
 }
 
 function blank()

@@ -43,7 +43,7 @@
 			{
 				position: absolute;
 				right: 4px;
-				top: 4px;
+				top: 5px;
 				width: 20px;
 				height: 15px;
 			}
@@ -114,7 +114,7 @@
 		</style>
 		<script src = "../../scripts/statistiks.js"></script>
 	</head>
-	<body onmousemove = "displayMouse()">
+	<body onmousemove = "displayMouse()" onmousedown = "mouseClick(); positionButton()" onmouseup = "mouseRelease()">
 		<div id = "dropper" onclick = "closeExport()"></div>
 		<textarea id = "export" style = "display: none"></textarea>
 		<canvas id = "canvas" width = "640px" height = "480px"></canvas>
@@ -127,19 +127,19 @@
 			<br>
 			Valid images and image sizes are as follows:
 			<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;iPhone Portrait<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"portrait.png"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;640x480
+			&nbsp;&nbsp;&nbsp;&nbsp;iPhone Portrait<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"portrait.png" - 640x480
 			<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;iPad Portrait<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"portrait-ipad.png"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;768x427
+			&nbsp;&nbsp;&nbsp;&nbsp;iPad Portrait<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"portrait-ipad.png" - 768x427
 			<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;Retina iPad Portrait<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"portrait-ipad@2x.png"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1536x854
+			&nbsp;&nbsp;&nbsp;&nbsp;Retina iPad Portrait<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"portrait-ipad@2x.png" - 1536x854
 			<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;iPhone Landscape<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"landscape.png"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;960x640
+			&nbsp;&nbsp;&nbsp;&nbsp;iPhone Landscape<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"landscape.png" - 960x640
 			<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;iPhone Widescreen Landscape<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"landscape@R4.png"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1136x640
+			&nbsp;&nbsp;&nbsp;&nbsp;iPhone Widescreen Landscape<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"landscape@R4.png" - 1136x640
 			<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;iPad Landscape<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"landscape-ipad.png"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1024x768
+			&nbsp;&nbsp;&nbsp;&nbsp;iPad Landscape<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"landscape-ipad.png" - 1024x768
 			<br>
-			&nbsp;&nbsp;&nbsp;&nbsp;Retina iPad Landscape<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"landscape-ipad@2x.png"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2048x1536
+			&nbsp;&nbsp;&nbsp;&nbsp;Retina iPad Landscape<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"landscape-ipad@2x.png" - 2048x1536
 			<br>
 		</div>
 		<img id = "hack">
@@ -150,6 +150,7 @@
 
 			<input id = "skinName" type = "text" title = "Skin Name" value = "Skin Name" onchange = "updateValues()">
 			<input id = "skinIdentifier" type = "text" title = "Skin Identifier" value = "com.example.skin" onchange = "updateValues()">
+			<input type = "checkbox" id = "allowedTransparency" title = "Allow in-app transparency preference?" onchange = "updateValues()">
 			<select id = "selectButton" onchange = "loadValues()">
 				<option value = "a" selected>A</option>
 				<option value = "b">B</option>
@@ -159,7 +160,9 @@
 				<option value = "menu">Menu</option>
 				<option value = "start">Start</option>
 				<option value = "select">Select</option>
+				<option value = "screen">Screen</option>
 			</select>
+			<input type = "checkbox" id = "screenModification" title = "Modify screen size and position?" onchange = "updateValues()">
 			<input id = "xPosition" class = "valueInput" type = "text" title = "X Position" onchange = "updateValues()">
 			<input id = "yPosition" class = "valueInput" type = "text" title = "Y Position" onchange = "updateValues()">
 			<input id = "buttonWidth" class = "valueInput" type = "text" title = "Button Width" onchange = "updateValues()">
